@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClueRandom</title>
+    <link rel="stylesheet" href="./assets/style/default.css" />
+  </head>
+  <body>
+    <h1>🔍 Cluedo Randomizer</h1>
+
+    <h2>Faites votre hypothèse</h2>
+
+    <div class="choix">
+      <label>Suspect :</label>
+      <select id="choix-suspect"></select>
+
+      <label>Arme :</label>
+      <select id="choix-arme"></select>
+
+      <label>Lieu :</label>
+      <select id="choix-lieu"></select>
+    </div>
+
+    <button id="deviner">Deviner</button>
+
+    <div id="feedback"></div>
+
+    <button id="restart">Nouvelle Partie</button>
+
+    <section id="feuille-deduction">
+      <h2>🧠 Feuille de déduction</h2>
+
+      <div class="bloc-deduction">
+        <h3>Suspects</h3>
+        <ul id="deduction-suspects"></ul>
+      </div>
+
+      <div class="bloc-deduction">
+        <h3>Armes</h3>
+        <ul id="deduction-armes"></ul>
+      </div>
+
+      <div class="bloc-deduction">
+        <h3>Lieux</h3>
+        <ul id="deduction-lieux"></ul>
+      </div>
+    </section>
+
+    <script src="./assets/scripts/script.js"></script>
+  </body>
+</html>
