@@ -5,6 +5,9 @@ const selectArme = document.getElementById("choix-arme");
 const selectLieu = document.getElementById("choix-lieu");
 const guessBtn = document.getElementById("deviner");
 const restartBtn = document.getElementById("restart");
+const askBtn = document.getElementById("btn-interroger");
+const askAnswer = document.getElementById("reponse-interrogatoire");
+let solution = {};
 
 const suspects = [
   {
@@ -87,10 +90,27 @@ const lieux = [
   },
 ];
 
-const pickRandomly = (list) => {
-  const index = Math.floor(Math.random() * list.length);
+const newGame = () => {
+  solution = {
+    suspect: pickRandomly(suspects),
+    arme: pickRandomly(armes),
+    lieu: pickRandomly(lieux),
+  };
 
-  return list[index];
+  selectSuspect.selectedIndex = 0;
+  selectArme.selectedIndex = 0;
+  selectLieu.selectedIndex = 0;
+
+  feedback.innerHTML = `<p>🔄 Nouvelle enquête lancée ! Faites votre première hypothèse.</p>`;
+
+  li = document.querySelectorAll("li");
+  li.forEach((li) => li.classList.remove("elimine"));
+};
+
+const pickRandomly = (arr) => {
+  const index = Math.floor(Math.random() * arr.length);
+
+  return arr[index];
 };
 
 const fillSelect = (selectId, options) => {
@@ -121,19 +141,29 @@ const fillDeduction = (id, options) => {
   );
 };
 
+const interrogate = () => {
+  const suspect = document.getElementById("select-interrogatoire").value;
+  const chanceOfTruth = 70;
+  const isTrustful = Math.random() * 100 < chanceOfTruth;
+
+  if (isTrustful) {
+    const isGuilty = suspect === solution.suspect.name;
+    askAnswer.innerHTML = isGuilty
+      ? `<p>🕵️ Le suspect avoue : "Oui, c'est moi !"</p>`
+      : `<p>🤔 Le suspect dit : "Non, je suis innocent."</p>`;
+  } else {
+    askAnswer.innerHTML = `<p>🤥 Le suspect ment : "Je ne sais rien."</p>`;
+  }
+};
+
 fillDeduction("deduction-suspects", suspects);
 fillDeduction("deduction-armes", armes);
 fillDeduction("deduction-lieux", lieux);
 
-let solution = {
-  suspect: pickRandomly(suspects),
-  arme: pickRandomly(armes),
-  lieu: pickRandomly(lieux),
-};
-
 fillSelect("choix-suspect", suspects);
 fillSelect("choix-arme", armes);
 fillSelect("choix-lieu", lieux);
+fillSelect("select-interrogatoire", suspects);
 
 guessBtn.addEventListener("click", () => {
   const suspect = selectSuspect.value;
@@ -153,16 +183,8 @@ guessBtn.addEventListener("click", () => {
   }
 });
 
-restartBtn.addEventListener("click", () => {
-  solution = {
-    suspect: pickRandomly(suspects),
-    arme: pickRandomly(armes),
-    lieu: pickRandomly(lieux),
-  };
+askBtn.addEventListener("click", interrogate);
 
-  selectSuspect.selectedIndex = 0;
-  selectArme.selectedIndex = 0;
-  selectLieu.selectedIndex = 0;
+restartBtn.addEventListener("click", newGame);
 
-  feedback.innerHTML = `<p>🔄 Nouvelle enquête lancée ! Faites votre première hypothèse.</p>`;
-});
+newGame();
